@@ -25,6 +25,8 @@ public class DatastoreDAOImpl implements DatastoreDAO
 
 	private String dataFolder;
 
+	private String overrideFolder;
+
 	@Inject
 	public DatastoreDAOImpl(@Named("location.partners") String dataFolder)
 	{
@@ -33,15 +35,30 @@ public class DatastoreDAOImpl implements DatastoreDAO
 		if (!df.isDirectory())
 			df.mkdirs();
 
+		this.overrideFolder = this.dataFolder + File.separatorChar + "override";
+		File of = new File(this.overrideFolder);
+		if (!of.isDirectory())
+			of.mkdirs();
+
 		this.om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 	}
 
 	@Override
 	public Optional<ResourcePartner> getPartner(String id) throws IOException
 	{
-		String filename = dataFolder + File.separatorChar + makeFilenameSafe(id).toUpperCase() + ".json";
+		String filename = overrideFolder + File.separatorChar + makeFilenameSafe(id).toUpperCase() + ".json";
+		File file = new File(filename);
+		if (!file.canRead())
+		{
+			filename = dataFolder + File.separatorChar + makeFilenameSafe(id).toUpperCase() + ".json";
+			file = new File(filename);
+		}
+
+		if (!file.canRead())
+			return Optional.empty();
+
 		log.debug("getting partner: {}", filename);
-		ResourcePartner p = om.readValue(new File(filename), ResourcePartner.class);
+		ResourcePartner p = om.readValue(file, ResourcePartner.class);
 
 		return Optional.ofNullable(p);
 	}
@@ -58,8 +75,17 @@ public class DatastoreDAOImpl implements DatastoreDAO
 				continue;
 
 			String id = makeNucFromFilename(f.getName()).replace(".json", "");
-			ResourcePartner partner = getPartner(id).get();
-			partners.put(id, partner);
+			getPartner(id).ifPresent(p -> partners.put(id, p));
+		}
+
+		folder = new File(this.overrideFolder);
+		for (File f : folder.listFiles())
+		{
+			if (!f.getName().toLowerCase().endsWith(".json"))
+				continue;
+
+			String id = makeNucFromFilename(f.getName()).replace(".json", "");
+			getPartner(id).ifPresent(p -> partners.put(id, p));
 		}
 
 		return partners;

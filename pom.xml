@@ -2,8 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.nishen</groupId>
-	<artifactId>resource-sharing-partners-harvest</artifactId>
-	<version>0.2.4</version>
+	<artifactId>resource-sharing-partners</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>resource-partners</name>
