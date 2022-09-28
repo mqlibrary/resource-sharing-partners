@@ -59,9 +59,6 @@ public class ResourcePartnerAddress implements Serializable
 	@JsonProperty("end_date")
 	private String endDate;
 
-	@JsonProperty("address_types")
-	private String addressTypes;
-
 	@JsonProperty("preferred")
 	private Boolean preferred;
 
@@ -205,16 +202,6 @@ public class ResourcePartnerAddress implements Serializable
 		this.endDate = endDate;
 	}
 
-	public String getAddressTypes()
-	{
-		return addressTypes;
-	}
-
-	public void setAddressTypes(String addressTypes)
-	{
-		this.addressTypes = addressTypes;
-	}
-
 	public Boolean getPreferred()
 	{
 		return preferred;
@@ -233,8 +220,8 @@ public class ResourcePartnerAddress implements Serializable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(addressNote, addressStatus, addressType, addressTypes, city, country, endDate, line1, line2,
-		                    line3, line4, line5, postalCode, preferred, startDate, stateProvince);
+		return Objects.hash(addressNote, addressStatus, addressType, city, country, endDate, line1, line2, line3, line4,
+		                    line5, postalCode, preferred, startDate, stateProvince);
 	}
 
 	@Override
@@ -248,13 +235,13 @@ public class ResourcePartnerAddress implements Serializable
 			return false;
 		ResourcePartnerAddress other = (ResourcePartnerAddress) obj;
 		return Objects.equals(addressNote, other.addressNote) && Objects.equals(addressStatus, other.addressStatus) &&
-		       Objects.equals(addressType, other.addressType) && Objects.equals(addressTypes, other.addressTypes) &&
-		       Objects.equals(city, other.city) && Objects.equals(country, other.country) &&
-		       Objects.equals(endDate, other.endDate) && Objects.equals(line1, other.line1) &&
-		       Objects.equals(line2, other.line2) && Objects.equals(line3, other.line3) &&
-		       Objects.equals(line4, other.line4) && Objects.equals(line5, other.line5) &&
-		       Objects.equals(postalCode, other.postalCode) && Objects.equals(preferred, other.preferred) &&
-		       Objects.equals(startDate, other.startDate) && Objects.equals(stateProvince, other.stateProvince);
+		       Objects.equals(addressType, other.addressType) && Objects.equals(city, other.city) &&
+		       Objects.equals(country, other.country) && Objects.equals(endDate, other.endDate) &&
+		       Objects.equals(line1, other.line1) && Objects.equals(line2, other.line2) &&
+		       Objects.equals(line3, other.line3) && Objects.equals(line4, other.line4) &&
+		       Objects.equals(line5, other.line5) && Objects.equals(postalCode, other.postalCode) &&
+		       Objects.equals(preferred, other.preferred) && Objects.equals(startDate, other.startDate) &&
+		       Objects.equals(stateProvince, other.stateProvince);
 	}
 
 	@Override
@@ -289,8 +276,6 @@ public class ResourcePartnerAddress implements Serializable
 		builder.append(startDate);
 		builder.append(", endDate=");
 		builder.append(endDate);
-		builder.append(", addressTypes=");
-		builder.append(addressTypes);
 		builder.append(", preferred=");
 		builder.append(preferred);
 		builder.append("]");

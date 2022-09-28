@@ -26,6 +26,15 @@
 			<filtered>true</filtered>
 		</fileSet>
 		<fileSet>
+			<directory>src/main/config</directory>
+			<outputDirectory>data/config</outputDirectory>
+			<includes>
+				<include>ALMA.json</include>
+			</includes>
+			<lineEnding>dos</lineEnding>
+			<filtered>true</filtered>
+		</fileSet>
+		<fileSet>
 			<directory>src/main/scripts</directory>
 			<outputDirectory />
 			<includes>
