@@ -85,15 +85,15 @@ public class ResourcePartnerHarvesterImpl implements ResourcePartnerHarvester
 
 				List<ResourcePartnerChangeRecord> changes = new ArrayList<ResourcePartnerChangeRecord>();
 
-				log.info("partners found: {}", harvestedPartners.size());
+				log.info("partners found:     {}", harvestedPartners.size());
 				Map<String, ResourcePartner> changed = harvester.update(partners, harvestedPartners, changes);
 				partners.putAll(changed);
-				log.info("partners changed:    {}", changed.size());
+				log.info("partners changed:   {}", changed.size());
 
 				if (changed.size() > 0)
 				{
 					datastore.addEntities(changed.values());
-					log.info("partners saved:     {}", changed.size());
+					log.info("partners saved: {}", changed.size());
 				}
 			}
 			catch (ResourcePartnerHarvesterSkipException sre)

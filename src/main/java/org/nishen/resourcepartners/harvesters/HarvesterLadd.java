@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.nishen.resourcepartners.dao.LaddDAO;
 import org.nishen.resourcepartners.entity.ResourcePartner;
@@ -115,8 +115,7 @@ public class HarvesterLadd implements Harvester
 					requiresUpdate = true;
 				}
 
-				Set<ResourcePartnerSuspension> lSuspensions =
-				        new LinkedHashSet<ResourcePartnerSuspension>(l.getSuspensions());
+				Set<ResourcePartnerSuspension> lSuspensions = new TreeSet<>(l.getSuspensions());
 				for (ResourcePartnerSuspension s : lSuspensions)
 					if (!p.getSuspensions().contains(s))
 					{

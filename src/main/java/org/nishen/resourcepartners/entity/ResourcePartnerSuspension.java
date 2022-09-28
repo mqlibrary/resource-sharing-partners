@@ -149,29 +149,23 @@ public class ResourcePartnerSuspension implements Serializable, Comparable<Resou
 	@Override
 	public int compareTo(ResourcePartnerSuspension o)
 	{
-		if (this.suspensionEnd == null)
+		if (this.suspensionEnd == null && o.suspensionEnd != null)
 			return -1;
 
-		if (o.suspensionEnd == null)
+		if (this.suspensionEnd != null && o.suspensionEnd == null)
 			return 1;
 
 		if (this.suspensionEnd.compareTo(o.suspensionEnd) != 0)
 			return this.suspensionEnd.compareTo(o.suspensionEnd);
 
-		if (this.suspensionStart == null)
+		if (this.suspensionStart == null && o.suspensionStart != null)
 			return -1;
 
-		if (o.suspensionStart == null)
+		if (this.suspensionStart != null && o.suspensionStart == null)
 			return 1;
 
 		if (this.suspensionStart.compareTo(o.suspensionStart) != 0)
 			return this.suspensionStart.compareTo(o.suspensionStart);
-
-		if (this.suspensionAdded == null)
-			return -1;
-
-		if (this.suspensionAdded.compareTo(o.suspensionAdded) != 0)
-			return this.suspensionAdded.compareTo(o.suspensionAdded);
 
 		if (SUSPENDED.equals(this.suspensionStatus) && !SUSPENDED.equals(o.suspensionStatus))
 			return 1;

@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.ws.rs.NotFoundException;
 
@@ -64,6 +65,8 @@ public class HarvesterIlrs implements Harvester
 
 	private DatastoreDAO datastoreDAO;
 
+	private AtomicInteger harvestCount = new AtomicInteger(0);
+
 	@Inject
 	public HarvesterIlrs(ConfigFactory configFactory, IlrsDAO ilrs, DatastoreDAO datastoreDAO)
 	{
@@ -98,7 +101,7 @@ public class HarvesterIlrs implements Harvester
 		Map<String, Future<String>> results = new HashMap<String, Future<String>>();
 		for (String nuc : esPartners.keySet())
 			if (!nuc.startsWith(NZ_NUC_PREFIX))
-				results.put(nuc, executor.submit(new Harvester(nuc)));
+				results.put(nuc, executor.submit(new Harvester(nuc, harvestCount)));
 
 		executor.shutdown();
 
@@ -302,9 +305,12 @@ public class HarvesterIlrs implements Harvester
 	{
 		private String nuc;
 
-		public Harvester(String nuc)
+		public Harvester(String nuc, AtomicInteger count)
 		{
 			this.nuc = nuc;
+			int c = count.incrementAndGet();
+			if (c % 100 == 0)
+				log.info("addresses processed: {}", c);
 		}
 
 		public String call()
