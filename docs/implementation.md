@@ -173,7 +173,6 @@ Sample partner record:
 			"address_note": null,
 			"start_date": null,
 			"end_date": null,
-			"address_types": null,
 			"preferred": null
 		},
 		{
@@ -191,7 +190,6 @@ Sample partner record:
 			"address_note": null,
 			"start_date": null,
 			"end_date": null,
-			"address_types": null,
 			"preferred": null
 		},
 		{
@@ -209,7 +207,6 @@ Sample partner record:
 			"address_note": null,
 			"start_date": null,
 			"end_date": null,
-			"address_types": null,
 			"preferred": null
 		}
 	]
