@@ -106,7 +106,7 @@ Sample Alma configuration:
 {
 	"apiurl": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1",
 	"apikey": "[enter your apikey here]",
-	"nuc": "[this is your institutions nuc - e.g. AATO]",
+	"nuc": "[this is your institutions nuc - e.g. NMQU]",
 	"avgSupplyTime": 4,
 	"borrowingSupported": true,
 	"borrowingWorkflow": "LADD_Borrowing",
@@ -119,7 +119,7 @@ Sample Alma configuration:
 	"isoRequestExpiryTypeValue": "INTEREST_DATE",
 	"isoSendRequesterInformation": false,
 	"isoSharedBarcodes": true,
-	"isoSymbol": "NLA:AATO",
+	"isoSymbol": "NLA:NMQU",
 	"lendingSupported": true,
 	"lendingWorkflow": "LADD_Lending",
 	"linkBase": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/",

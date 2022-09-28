@@ -1,6 +1,6 @@
 # Partner Synchronisation with Alma - Overview
 ## Table of Contents
-- [Overview](README.md#partner-synchronisation-with-alma---overview)
+- [Overview](README.md)
   - [Table of Contents](README.md#table-of-contents)
   - [Introduction](README.md#introduction)
   - [Problem](README.md#problem)
@@ -12,6 +12,7 @@
   - [Obtaining the Software](implementation.md#obtaining-the-software)
   - [Installation](implementation.md#installation)
   - [Configuration](implementation.md#configuration)
+- [Harvesting Data Concepts](harvest.md)
 
 ---
 ## Introduction
