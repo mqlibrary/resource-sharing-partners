@@ -8,11 +8,16 @@
   - [High Level Design Diagrams](README.md#high-level-design-diagrams)
     - [Harvesting Resource Sharing Partner Data](README.md#harvesting-resource-sharing-partner-data)
     - [Synchronising Resource Sharing Partner Data](README.md#synchronising-resource-sharing-partner-data)
+- [Harvesting Data Concepts](harvesting.md)
+  - [Harvesting LADD (_Australia_)](harvesting.md#1-harvesting-ladd-australia)
+  - [Harvesting ILRS (_Australia_)](harvesting.md#2-harvesting-ilrs-australia)
+  - [Harvesting TEPUNA (_New Zealand_)](harvesting.md#3-harvesting-tepuna-new-zealand)
+  - [Harvesting EMAIL (_New Zealand_)](harvesting.md#4-harvesting-email-new-zealand)
 - [Implementation](implementation.md)
   - [Obtaining the Software](implementation.md#obtaining-the-software)
   - [Installation](implementation.md#installation)
   - [Configuration](implementation.md#configuration)
-- [Harvesting Data Concepts](harvest.md)
+- [Configuring Outlook for Tepuna Status Emails](outlook-configuration.md)
 
 ---
 ## Introduction

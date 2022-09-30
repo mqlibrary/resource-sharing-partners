@@ -1,4 +1,5 @@
 # Partner Synchronisation with Alma - Implementation
+__[HOME](README.md)__
 
 ## Obtaining the Software
 
@@ -46,15 +47,17 @@ The software is distributed as:
 1. A single Java binary.
 2. Wrapper scripts for running on either windows or linux (rsp.cmd or rsp.sh).
 3. A bootstrap configuration file called __app.properties__ that you will need to configure before running the application.
+4. A bootstrap configuration file called __ALMA.json__ that you will need to configure carefully before running the application.
 
 ### Installing the software
-1. Once you have the package from either downloading or building, unzip/untar the appropriate package to desired location and maybe create an alias, e.g.:
-   ```bash
-   cd /opt
-   tar xzf /opt/resource-sharing-partners-1.0.0-dist.tar.gz
-   ln -snf resource-sharing-partners-1.0.0 rsp
-   cd /opt/rsp
-   ```
+Once you have the package from either downloading or building, unzip/untar the appropriate package to desired location and maybe create an alias, e.g.:
+```bash
+cd /opt
+tar xzf /opt/resource-sharing-partners-1.0.0-dist.tar.gz
+ln -snf resource-sharing-partners-1.0.0 rsp
+cd /opt/rsp
+```
+
 ---
 ## Configuration
 
@@ -95,23 +98,44 @@ By default they will be under the execution folder (e.g. /opt/rsp in our example
     - data/partners
     - data/output
     
-### Configuring __ALMA.json__.
-The default data/config folder should already be there as part of the package you unzipped. It contains a sample Alma configuration file called __ALMA.json__. You will need to customise this file to reflect the configuration you have in Alma. Partners will be created/updated with the values you specify in this file.  
+### Configuring your Institution (__ALMA.json__).
+The default data/config folder should already be there as part of the package you unzipped. It contains a sample Alma configuration file called __ALMA.json__. You will need to customise this file to reflect the configuration you have in Alma. Partners will be created/updated with the values you specify in this file.
+
  ___You need to go through this config extremely carefully!___
 
-__ALMA CONFIGURATION (ALMA.json)__ + __PARTNER RECORD__ = __ALMA RECORD__
+An Alma record is an amalgamation of the Datastore representation of an Organisation and the loading institutions configuration.
 
-Sample Alma configuration:
+```
+ALMA CONFIGURATION (ALMA.json) + PARTNER RECORD = ALMA RECORD
+```
+
+__Sample Alma configuration (__ALMA.json__) (_do not use with comments_)__:
 ```json
 {
+	// API base url - usually no need to change
 	"apiurl": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1",
+	
+	// Insert API key. Requires "Partners  Production Read/write" permissions.
 	"apikey": "[enter your apikey here]",
-	"nuc": "[this is your institutions nuc - e.g. NMQU]",
+	
+	// This is where you put your NUC code for your institution
+	"nuc": "NMQU",
+
+	// Workflow settings
 	"avgSupplyTime": 4,
 	"borrowingSupported": true,
 	"borrowingWorkflow": "LADD_Borrowing",
 	"currency": "AUD",
 	"deliveryDelay": 4,
+	"lendingSupported": true,
+	"lendingWorkflow": "LADD_Lending",
+	"linkBase": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/",
+	"locateProfileDesc": "LADD Locate Profile",
+	"locateProfileValue": "LADD",
+	"systemTypeDesc": "LADD",
+	"systemTypeValue": "LADD",
+
+	// ISO configuration settings
 	"isoAlternativeDocumentDelivery": false,
 	"isoIllPort": "1611",
 	"isoIllServer": "nla.vdxhost.com",
@@ -120,20 +144,35 @@ Sample Alma configuration:
 	"isoSendRequesterInformation": false,
 	"isoSharedBarcodes": true,
 	"isoSymbol": "NLA:NMQU",
-	"lendingSupported": true,
-	"lendingWorkflow": "LADD_Lending",
-	"linkBase": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/",
-	"locateProfileDesc": "LADD Locate Profile",
-	"locateProfileValue": "LADD",
-	"systemTypeDesc": "LADD",
-	"systemTypeValue": "LADD",
+
+    // Some flags to allow setting of the 'preferred' option for contact info
 	"preferredAddressType": "shipping",
 	"preferredEmailType": "ill",
 	"preferredPhoneType": "order_phone"
 }
 ```
 
-Sample partner record:
+The following are valid preferred types:
+- Address:
+   - billing
+   - claim
+   - order
+   - payment
+   - returns
+   - shipping
+- Phone:
+   - claimPhone
+   - orderPhone
+   - paymentPhone
+   - returnsPhone
+- Email:
+   - claimMail
+   - orderMail
+   - paymentMail
+   - queries
+   - returnsMail
+
+__Sample partner record:__
 ```json
 {
 	"nuc": "AATO",
@@ -213,7 +252,7 @@ Sample partner record:
 }
 ```
 
-Sample Alma record:
+__Sample Alma record:__
 ```json
 {
 	"partner_details": {
