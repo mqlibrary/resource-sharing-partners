@@ -11,14 +11,18 @@ We will cover both these tasks in detail.
 ## Creating an Outlook Account
 You can simply go to https://outlook.live.com and create a new account. Select the Create account link in the top right corner.
 
-![Creating an Outlook account](outlook-oauth2/outlook-oauth2-01.png)
+![Creating an Outlook account](aoutlook-oauth2/outlook-oauth2-01.png)
 
-![New Outlook account welcome screen](outlook-oauth2/outlook-oauth2-02.png)
+![New Outlook account welcome screen](aoutlook-oauth2/outlook-oauth2-02.png)
 
 Once you've created your account and logged in, you will need to create a new folder called 'Processed'. This is where Tepuna emails are moved once they are processed.
-![New Outlook account Inbox](outlook-oauth2/outlook-oauth2-03.png)
+![New Outlook account Inbox](aoutlook-oauth2/outlook-oauth2-03.png)
 
 ## Creating an App Registration
-You will also need to configure the account to support OAuth2 login access. The process for this is outlined here: https://learn.microsoft.com/en-us/outlook/rest/get-started
+Creating an __App Registration__ allows the harvest application to interact programmatically with the Outlook account via the [Microsoft Graph API](https://learn.microsoft.com/en-us/outlook/rest/get-started).
 
-The URL for managing REST applications: https://apps.dev.microsoft.com/
+Some additional links:
+- [OAuth2 using Microsoft AD](https://learn.microsoft.com/en-us/azure/active-directory/develop/)
+- [Registering an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+- [Azure Portal for managing App Registrations](https://portal.azure.com/)
+
