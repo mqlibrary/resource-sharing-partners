@@ -1,6 +1,7 @@
-# Partner Synchronisation with Alma - Overview
+# Partner Synchronisation with Alma
+__[HOME](README.md)__
 ## Table of Contents
-- [Overview](README.md)
+- [Partner Synchronisation with Alma](README.md)
   - [Table of Contents](README.md#table-of-contents)
   - [Introduction](README.md#introduction)
   - [Problem](README.md#problem)
@@ -18,6 +19,9 @@
   - [Installation](implementation.md#installation)
   - [Configuration](implementation.md#configuration)
 - [Configuring Outlook for Tepuna Status Emails](outlook-configuration.md)
+  - [Creating an Outlook Account](outlook-configuration.md#creating-an-outlook-account)
+  - [Creating an App Registration](outlook-configuration.md#creating-an-app-registration)
+  - [Generating an Access Token](outlook-configuration.md#generating-an-access-token)
 
 ---
 ## Introduction

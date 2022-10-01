@@ -1,4 +1,4 @@
-# Partner Synchronisation with Alma - Implementation
+# Implementation
 __[HOME](README.md)__
 
 ## Obtaining the Software
