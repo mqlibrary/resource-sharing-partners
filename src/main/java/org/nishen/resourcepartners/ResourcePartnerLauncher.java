@@ -124,7 +124,7 @@ public class ResourcePartnerLauncher
 		System.out.println("java -jar resource-partner-sharing-x.y.z.jar [options]");
 		System.out.println("  -h                                        help");
 		System.out.println("  -?                                        help");
-		System.out.println("  -action (harvest|sync|preview|changes)");
+		System.out.println("  -action (harvest|sync|preview)");
 		System.out.println("      harvest                               run the harvest");
 		System.out.println("      sync                                  sync partner data with Alma");
 		System.out.println("      preview                               show what would happen without updating Alma");

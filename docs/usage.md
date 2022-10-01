@@ -1,621 +1,84 @@
-# Using the Sync Server
+# Usage
+__[HOME](README.md)__
 
-_The examples in this document use [HTTPie](https://httpie.org)._
+There are three actions that you can use with the application:
+  1. Harvest (this is for harvesting data from the various source systems)
+  2. Preview (this can show you what would change in Alma without changing anything)
+  3. Sync (this updates Alma with the latest harvested partner data)
 
-For the operations {nuc} should be replaced with your institutions NUC symbol.
-
-All operations require the Authorization HTTP header with an API key for your Alma instances. The API key must have read/write access to the Resource Partners API. The header works exactly the same as using any Alma API:
-
+If you execute the application with a -h or -? you will see the following:
 ```bash
-Authorization: apikey {APIKEY}
+java -jar resource-partner-sharing-x.y.z.jar [options]
+  -h                                        help
+  -?                                        help
+  -action (harvest|sync|preview)
+      harvest                               run the harvest
+      sync                                  sync partner data with Alma
+      preview                               show what would happen without updating Alma
+  -harvesters harvester1,hearvester2,...    allows selection of harvesters to run by specifying
+                                            a comma separated list: [LADD,ILRS,TEPUNA,OUTLOOK]
+                                            (only works with the harvest action)
 ```
 
-There are __5__ operations that you can use the Sync Server for:
+## The Harvest Action
+### Execution
+To execute the __harvest__ action we run the following command:
+```bash
+rsp.cmd -action harvest
+```
 
-1. GET /partner-sync/{nuc}/__preview__
+This will execute the harvester and all the harvesting modules, LADD, ILRS, TEPUNA, OUTLOOK.
 
-    _Provide a list of Partner records that will be updated in Alma if you were to trigger a Sync. This gives you the list without changing anything in Alma._
+We can also select specific harvesters to run by using the __-harvesters__ switch, e.g.
+```bash
+rsp.cmd -action harvest -harvesters LADD,TEPUNA
+```
+This would only run the harvesters for LADD and TEPUNA.
 
-    Sample request:
-    ```bash
-    http localhost:8080/partner-sync/NMQU/preview Authorization:"apikey l7xx123a123b123c123d123e123f123g123h"
-    ```
+### IRLS Harvesting
+IRLS harvesting generates a config file in the config folder, __ILRS.json__.
+```json
+{
+	"last_run_attempt": "2022-09-28T11:44:32+1000",
+	"last_run": "2022-09-28T11:39:48+1000"
+}
+```
+This config records when the last run time and last run attempt occurred. The IRLS harvest only happens once every 7 days. If you want to run it within the 7 days, just edit the __last_run__ setting to a date something more than 7 days in the past.
 
-    Sample output:
-    ```json
-    {
-      "partner": [
-        {
-          "contact_info": {
-            "addresses": {
-              "address": [
-                {
-                  "address_types": {
-                    "address_type": [
-                      "ALL"
-                    ]
-                  },
-                  "city": "BOX HILL",
-                  "country": {
-                    "desc": "Australia",
-                    "value": "AUS"
-                  },
-                  "line1": "Box Hill Institute Library - Interlibrary Loans",
-                  "line2": "465 Elgar Road",
-                  "postal_code": "3128",
-                  "preferred": false,
-                  "state_province": "VIC"
-                },
-                {
-                  "address_types": {
-                    "address_type": [
-                      "shipping"
-                    ]
-                  },
-                  "city": "BOX HILL",
-                  "country": {
-                    "desc": "Australia",
-                    "value": "AUS"
-                  },
-                  "line1": "Box Hill Institute Library - Interlibrary Loans",
-                  "line2": "Private Bag 2014",
-                  "postal_code": "3128",
-                  "preferred": false,
-                  "state_province": "VIC"
-                }
-              ]
-            },
-            "emails": {
-              "email": [
-                {
-                  "email_address": "ill@boxhill.edu.au",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            },
-            "phones": {
-              "phone": [
-                {
-                  "phone_number": "03 9286 9283",
-                  "phone_types": {
-                    "phone_type": [
-                      "claim_phone",
-                      "order_phone",
-                      "payment_phone",
-                      "returns_phone"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            }
-          },
-          "link": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/VBHE",
-          "notes": {
-          },
-          "partner_details": {
-            "avg_supply_time": 4,
-            "borrowing_supported": true,
-            "borrowing_workflow": "LADD_Borrowing",
-            "code": "VBHE",
-            "currency": "AUD",
-            "delivery_delay": 4,
-            "holding_code": "VBHE",
-            "lending_supported": true,
-            "lending_workflow": "LADD_Lending",
-            "locate_profile": {
-              "desc": "LADD Locate Profile",
-              "value": "LADD"
-            },
-            "name": "Box Hill Institute",
-            "profile_details": {
-              "iso_details": {
-                "alternative_document_delivery": false,
-                "ill_port": 1611,
-                "ill_server": "nla.vdxhost.com",
-                "iso_symbol": "NLA:VBHE",
-                "request_expiry_type": {
-                  "desc": "Expire by interest date",
-                  "value": "INTEREST_DATE"
-                },
-                "send_requester_information": false,
-                "shared_barcodes": true
-              },
-              "profile_type": "ISO"
-            },
-            "status": "ACTIVE",
-            "system_type": {
-              "desc": "LADD",
-              "value": "LADD"
-            }
-          }
-        },
-        {
-          "contact_info": {
-            "addresses": {
-              "address": [
-                {
-                  "address_types": {
-                    "address_type": [
-                      "ALL"
-                    ]
-                  },
-                  "city": "Wellington",
-                  "country": {
-                    "desc": "New Zealand",
-                    "value": "NZL"
-                  },
-                  "line1": "Level 9",
-                  "line2": "Solnet House",
-                  "line3": "70 The Terrace",
-                  "postal_code": "6011",
-                  "preferred": false
-                },
-                {
-                  "address_types": {
-                    "address_type": [
-                      "shipping"
-                    ]
-                  },
-                  "city": "Wellington",
-                  "country": {
-                    "desc": "New Zealand",
-                    "value": "NZL"
-                  },
-                  "line1": "PO Box 2590",
-                  "postal_code": "6140",
-                  "preferred": false
-                }
-              ]
-            },
-            "emails": {
-              "email": [
-                {
-                  "email_address": "library@lawcom.govt.nz",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                },
-                {
-                  "email_address": "library@lawcom.govt.nz",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            },
-            "phones": {
-              "phone": [
-                {
-                  "phone_number": "+64 4 914 4843",
-                  "phone_types": {
-                    "phone_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                },
-                {
-                  "phone_number": "+64 4 914 4831",
-                  "phone_types": {
-                    "phone_type": [
-                      "claim_phone",
-                      "order_phone",
-                      "payment_phone",
-                      "returns_phone"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            }
-          },
-          "link": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/NLNZ:WLC",
-          "notes": {
-          },
-          "partner_details": {
-            "avg_supply_time": 4,
-            "borrowing_supported": true,
-            "borrowing_workflow": "LADD_Borrowing",
-            "code": "NLNZ:WLC",
-            "currency": "AUD",
-            "delivery_delay": 4,
-            "holding_code": "NLNZ:WLC",
-            "lending_supported": true,
-            "lending_workflow": "LADD_Lending",
-            "locate_profile": {
-              "desc": "LADD Locate Profile",
-              "value": "LADD"
-            },
-            "name": "Law Commission Library",
-            "profile_details": {
-              "iso_details": {
-                "alternative_document_delivery": false,
-                "ill_port": 1611,
-                "ill_server": "nla.vdxhost.com",
-                "iso_symbol": "NLNZ:WLC",
-                "request_expiry_type": {
-                  "desc": "Expire by interest date",
-                  "value": "INTEREST_DATE"
-                },
-                "send_requester_information": false,
-                "shared_barcodes": true
-              },
-              "profile_type": "ISO"
-            },
-            "status": "ACTIVE",
-            "system_type": {
-              "desc": "LADD",
-              "value": "LADD"
-            }
-          }
-        }
-      ]
-    }
-    ```
+## The Preview Action
+To execute the __preview__ action we run the following command:
+```bash
+rsp.cmd -action preview
+```
 
-1. GET /partner-sync/{nuc}/__changes__
+The __preview__ action:
+1. Fetches all partners from the local datastore.
+2. Fetches all partners from Alma.
+3. Compares all partners between the local datastore and Alma.
+4. Generates a file called __partners-changed-[timestamp].json__. This contains all the partners that require updating in Alma. The file is in the Alma update format.
+5. Generates a file called __partners_changes-[timestamp].csv__. This is a CSV file that contains a list of all field changes for partners that have differences. 
+6. Generates a file called __partners-deleted-[timestamp].json__. This contains all partners that are in Alma, but not in the local datastore. These could potentially be deleted. The application does not delete partner records, but highlights the ones that could be deleted (manually) in this file.
 
-    _Provides a list of changes between the datastore and your Alma instance._
+## The Sync Action
+To execute the __sync__ action we run the following command:
+```bash
+rsp.cmd -action sync
+```
 
-    Sample request:
-    ```bash
-    http localhost:8080/partner-sync/NMQU/changes Authorization:"apikey l7xx123a123b123c123d123e123f123g123h"
-    ```
+The __sync__ action:
+1. Fetches all partners from the local datastore.
+2. Fetches all partners from Alma.
+3. Compares all partners between the local datastore and Alma.
+4. Generates a file called __partners-changed-[timestamp].json__. This contains all the partners that require updating in Alma. The file is in the Alma update format.
+5. Generates a file called __partners_changes-[timestamp].csv__. This is a CSV file that contains a list of all field changes for partners that have differences. 
+6. Generates a file called __partners-deleted-[timestamp].json__. This contains all partners that are in Alma, but not in the local datastore. These could potentially be deleted. The application does not delete partner records, but highlights the ones that could be deleted (manually) in this file.
+7. Updates Alma with all partners that are different between the local datastore and Alma (the partners in the file __partners-changed-[timestamp].json__).
 
-    Sample output:
-    ```json
-    [
-        {
-            "after": "ACTIVE",
-            "before": "INACTIVE",
-            "field": "status",
-            "nuc": "NABH",
-            "source_system": "NMQU",
-            "time": "2018-05-21T23:17:57+1000"
-        },
-        {
-            "after": "{\"preferred\":false,\"email_address\":\"kal@lcc.co.nz\",\"email_types\":{\"email_type\":[\"ALL\"]}}",
-            "before": null,
-            "field": "email",
-            "nuc": "NLNZ:WLCC",
-            "source_system": "NMQU",
-            "time": "2018-05-21T23:17:57+1000"
-        }
-    ]
-    ```
+## Additional Features
+### Partner Override
+There might be some use cases where you would like to override the data sourced from the source systems. Perhaps the Address information in ILRS is incorrect and you would like to add the correct address to be synced.
 
-1. GET /partner-sync/{nuc}/__orphaned__
+You could do this with an __override file__. In the __data/partners__ folder, there is a folder called '__override__'. Simply copy the partner json file from the __data/partners__ folder to the __data/partners/override__ folder and edit the data you wish to change in the record in the __override__ folder. When syncing or previewing, if a partner record exists in the __override__ folder, this is the data that will be used instead of the record in the __data/partners__ folder.
 
-    _Provides a list of partners that are in Alma, but not in the Datastore._
-
-    Sample request:
-    ```bash
-    http localhost:8080/partner-sync/NMQU/orphaned Authorization:"apikey l7xx123a123b123c123d123e123f123g123h"
-    ```
-
-    Sample response:
-    ```json
-    [
-        {
-            "contact_info": {
-                "addresses": {},
-                "emails": {},
-                "phones": {}
-            },
-            "link": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/QACU",
-            "notes": {},
-            "partner_details": {
-                "avg_supply_time": 4,
-                "borrowing_supported": true,
-                "borrowing_workflow": "LADD_Borrowing",
-                "code": "QACU",
-                "currency": "AUD",
-                "delivery_delay": 4,
-                "holding_code": "QACU",
-                "lending_supported": true,
-                "lending_workflow": "LADD_Lending",
-                "locate_profile": {
-                    "desc": "LADD Locate Profile",
-                    "value": "LADD"
-                },
-                "name": "Australian Catholic University Interlibrary Loans",
-                "profile_details": {
-                    "iso_details": {
-                        "alternative_document_delivery": false,
-                        "ill_port": 1611,
-                        "ill_server": "nla.vdxhost.com",
-                        "iso_symbol": "NLA:QACU",
-                        "request_expiry_type": {
-                            "desc": "Expire by interest date",
-                            "value": "INTEREST_DATE"
-                        },
-                        "send_requester_information": false,
-                        "shared_barcodes": true
-                    },
-                    "profile_type": "ISO"
-                },
-                "status": "ACTIVE",
-                "system_type": {
-                    "desc": "LADD",
-                    "value": "LADD"
-                }
-            }
-        }
-    ]
-    ```
-
-1. GET /partner-sync/{nuc}/__sync__
-
-    _Initiate synchronisation with Alma. Records that are different between the Datastore and Alma will be updated with data from the Datastore. The response is the list of Partners that are updated. This operation also expires the cache (see expirecache operation below)._
-
-    Sample request:
-    ```bash
-    http localhost:8080/partner-sync/NMQU/sync Authorization:"apikey l7xx123a123b123c123d123e123f123g123h"
-    ```
-    
-    Sample output:
-    ```json
-    {
-      "partner": [
-        {
-          "contact_info": {
-            "addresses": {
-              "address": [
-                {
-                  "address_types": {
-                    "address_type": [
-                      "ALL"
-                    ]
-                  },
-                  "city": "BOX HILL",
-                  "country": {
-                    "desc": "Australia",
-                    "value": "AUS"
-                  },
-                  "line1": "Box Hill Institute Library - Interlibrary Loans",
-                  "line2": "465 Elgar Road",
-                  "postal_code": "3128",
-                  "preferred": false,
-                  "state_province": "VIC"
-                },
-                {
-                  "address_types": {
-                    "address_type": [
-                      "shipping"
-                    ]
-                  },
-                  "city": "BOX HILL",
-                  "country": {
-                    "desc": "Australia",
-                    "value": "AUS"
-                  },
-                  "line1": "Box Hill Institute Library - Interlibrary Loans",
-                  "line2": "Private Bag 2014",
-                  "postal_code": "3128",
-                  "preferred": false,
-                  "state_province": "VIC"
-                }
-              ]
-            },
-            "emails": {
-              "email": [
-                {
-                  "email_address": "ill@boxhill.edu.au",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            },
-            "phones": {
-              "phone": [
-                {
-                  "phone_number": "03 9286 9283",
-                  "phone_types": {
-                    "phone_type": [
-                      "claim_phone",
-                      "order_phone",
-                      "payment_phone",
-                      "returns_phone"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            }
-          },
-          "link": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/VBHE",
-          "notes": {
-          },
-          "partner_details": {
-            "avg_supply_time": 4,
-            "borrowing_supported": true,
-            "borrowing_workflow": "LADD_Borrowing",
-            "code": "VBHE",
-            "currency": "AUD",
-            "delivery_delay": 4,
-            "holding_code": "VBHE",
-            "lending_supported": true,
-            "lending_workflow": "LADD_Lending",
-            "locate_profile": {
-              "desc": "LADD Locate Profile",
-              "value": "LADD"
-            },
-            "name": "Box Hill Institute",
-            "profile_details": {
-              "iso_details": {
-                "alternative_document_delivery": false,
-                "ill_port": 1611,
-                "ill_server": "nla.vdxhost.com",
-                "iso_symbol": "NLA:VBHE",
-                "request_expiry_type": {
-                  "desc": "Expire by interest date",
-                  "value": "INTEREST_DATE"
-                },
-                "send_requester_information": false,
-                "shared_barcodes": true
-              },
-              "profile_type": "ISO"
-            },
-            "status": "ACTIVE",
-            "system_type": {
-              "desc": "LADD",
-              "value": "LADD"
-            }
-          }
-        },
-        {
-          "contact_info": {
-            "addresses": {
-              "address": [
-                {
-                  "address_types": {
-                    "address_type": [
-                      "ALL"
-                    ]
-                  },
-                  "city": "Wellington",
-                  "country": {
-                    "desc": "New Zealand",
-                    "value": "NZL"
-                  },
-                  "line1": "Level 9",
-                  "line2": "Solnet House",
-                  "line3": "70 The Terrace",
-                  "postal_code": "6011",
-                  "preferred": false
-                },
-                {
-                  "address_types": {
-                    "address_type": [
-                      "shipping"
-                    ]
-                  },
-                  "city": "Wellington",
-                  "country": {
-                    "desc": "New Zealand",
-                    "value": "NZL"
-                  },
-                  "line1": "PO Box 2590",
-                  "postal_code": "6140",
-                  "preferred": false
-                }
-              ]
-            },
-            "emails": {
-              "email": [
-                {
-                  "email_address": "library@lawcom.govt.nz",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                },
-                {
-                  "email_address": "library@lawcom.govt.nz",
-                  "email_types": {
-                    "email_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            },
-            "phones": {
-              "phone": [
-                {
-                  "phone_number": "+64 4 914 4843",
-                  "phone_types": {
-                    "phone_type": [
-                      "ALL"
-                    ]
-                  },
-                  "preferred": false
-                },
-                {
-                  "phone_number": "+64 4 914 4831",
-                  "phone_types": {
-                    "phone_type": [
-                      "claim_phone",
-                      "order_phone",
-                      "payment_phone",
-                      "returns_phone"
-                    ]
-                  },
-                  "preferred": false
-                }
-              ]
-            }
-          },
-          "link": "https://api-ap.hosted.exlibrisgroup.com/almaws/v1/partners/NLNZ:WLC",
-          "notes": {
-          },
-          "partner_details": {
-            "avg_supply_time": 4,
-            "borrowing_supported": true,
-            "borrowing_workflow": "LADD_Borrowing",
-            "code": "NLNZ:WLC",
-            "currency": "AUD",
-            "delivery_delay": 4,
-            "holding_code": "NLNZ:WLC",
-            "lending_supported": true,
-            "lending_workflow": "LADD_Lending",
-            "locate_profile": {
-              "desc": "LADD Locate Profile",
-              "value": "LADD"
-            },
-            "name": "Law Commission Library",
-            "profile_details": {
-              "iso_details": {
-                "alternative_document_delivery": false,
-                "ill_port": 1611,
-                "ill_server": "nla.vdxhost.com",
-                "iso_symbol": "NLNZ:WLC",
-                "request_expiry_type": {
-                  "desc": "Expire by interest date",
-                  "value": "INTEREST_DATE"
-                },
-                "send_requester_information": false,
-                "shared_barcodes": true
-              },
-              "profile_type": "ISO"
-            },
-            "status": "ACTIVE",
-            "system_type": {
-              "desc": "LADD",
-              "value": "LADD"
-            }
-          }
-        }
-      ]
-    }
-    ```
-
-
-1. GET /partner-sync/{nuc}/__expirecache__
-
-    _When an initial request is made, Partners are retrieved from Alma and cached. Subsequent API calls make use of the cache. If you wish to refresh the Partner records in memory, you can expire the cache by making a request to this endpoint. There is no data in the response._
-
-    Sample request:
-    ```bash
-    http localhost:8080/partner-sync/NMQU/expirecache Authorization:"apikey l7xx123a123b123c123d123e123f123g123h"
-    ```
-    
+### Block Alma Partner Updating
+There may be situations where you wish to manually manage a partner in Alma. To prevent the partner from being updated by the __synchroniser__, you can add a __Note__ to the partner in Alma. Add a __Note__ with the text __NOSYNC__ to the partner and it will not be updated by the sync action.
