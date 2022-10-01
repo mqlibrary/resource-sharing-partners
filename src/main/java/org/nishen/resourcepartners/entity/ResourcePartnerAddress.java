@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "address")
 @JsonPropertyOrder({ "addressStatus", "addressType", "line1", "line2", "line3", "line4", "line5", "city",
-                     "stateProvince", "postalCode", "country", "addressNote", "startDate", "endDate", "addressTypes",
-                     "preferred" })
+                     "stateProvince", "postalCode", "country", "addressNote", "startDate", "endDate", "preferred" })
 public class ResourcePartnerAddress implements Serializable
 {
 	@JsonIgnore
