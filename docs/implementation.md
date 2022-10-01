@@ -4,8 +4,8 @@ __[HOME](README.md)__
 ## Obtaining the Software
 
 To obtain the software you could:
-1. [Build](implementation.md#build) the software.
-2. [Download](implementation.md#download) the pre-built software.
+1. [Download](implementation.md#download) the pre-built software.
+2. [Build](implementation.md#build) the software.
 
 ### Download
 __Requirements:__
