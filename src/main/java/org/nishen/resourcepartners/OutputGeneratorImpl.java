@@ -34,6 +34,8 @@ public class OutputGeneratorImpl implements OutputGenerator
 
 	private static final ObjectFactory of = new ObjectFactory();
 
+	private static final List<String> CHANGES_HEADERS = List.of("NUC", "TIME", "FIELD", "BEFORE", "AFTER");
+
 	private File outputFolder;
 
 	@Inject
@@ -77,18 +79,37 @@ public class OutputGeneratorImpl implements OutputGenerator
 	@Override
 	public void saveChanges(Map<String, List<ResourcePartnerChangeRecord>> changes) throws FileNotFoundException
 	{
-		List<String> headers = List.of("NUC", "TIME", "FIELD", "BEFORE", "AFTER");
-
 		String filename = this.outputFolder.getAbsolutePath() + File.separatorChar + "partners-changes-" +
 		                  format.format(now) + ".csv";
 
 		try (CSVPrinter printer = new CSVPrinter(new FileWriter(filename), CSVFormat.EXCEL))
 		{
-			printer.printRecord(headers);
+			printer.printRecord(CHANGES_HEADERS);
 
 			for (String nuc : changes.keySet())
 				for (ResourcePartnerChangeRecord c : changes.get(nuc))
 					printer.printRecord(c.getNuc(), c.getTime(), c.getField(), c.getBefore(), c.getAfter());
+		}
+		catch (IOException ioe)
+		{
+			log.error("{}", ioe.getMessage(), ioe);
+		}
+
+		log.info("generated field changes file: {}", filename);
+	}
+
+	@Override
+	public void saveHarvestChanges(List<ResourcePartnerChangeRecord> changes) throws FileNotFoundException
+	{
+		String filename = this.outputFolder.getAbsolutePath() + File.separatorChar + "harvest-partners-changes-" +
+		                  format.format(now) + ".csv";
+
+		try (CSVPrinter printer = new CSVPrinter(new FileWriter(filename), CSVFormat.EXCEL))
+		{
+			printer.printRecord(CHANGES_HEADERS);
+
+			for (ResourcePartnerChangeRecord c : changes)
+				printer.printRecord(c.getNuc(), c.getTime(), c.getField(), c.getBefore(), c.getAfter());
 		}
 		catch (IOException ioe)
 		{

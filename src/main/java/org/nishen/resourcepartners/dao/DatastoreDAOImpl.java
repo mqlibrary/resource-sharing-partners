@@ -27,6 +27,8 @@ public class DatastoreDAOImpl implements DatastoreDAO
 
 	private String overrideFolder;
 
+	private String previousFolder;
+
 	@Inject
 	public DatastoreDAOImpl(@Named("location.partners") String dataFolder)
 	{
@@ -39,6 +41,11 @@ public class DatastoreDAOImpl implements DatastoreDAO
 		File of = new File(this.overrideFolder);
 		if (!of.isDirectory())
 			of.mkdirs();
+
+		this.previousFolder = this.dataFolder + File.separatorChar + "previous";
+		File pf = new File(this.previousFolder);
+		if (!pf.isDirectory())
+			pf.mkdirs();
 
 		this.om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 	}
@@ -94,8 +101,19 @@ public class DatastoreDAOImpl implements DatastoreDAO
 	@Override
 	public void addEntity(BaseEntity esEntity) throws IOException
 	{
-		String filename = this.dataFolder + File.separatorChar + makeFilenameSafe(esEntity.getEntityId()) + ".json";
-		om.writeValue(new File(filename), esEntity);
+		String previousFilename =
+		        this.previousFolder + File.separatorChar + makeFilenameSafe(esEntity.getEntityId()) + ".json";
+		File previous = new File(previousFilename);
+		if (previous.canWrite())
+			previous.delete();
+
+		String partnerFilename =
+		        this.dataFolder + File.separatorChar + makeFilenameSafe(esEntity.getEntityId()) + ".json";
+		File entity = new File(partnerFilename);
+		if (entity.canWrite())
+			entity.renameTo(previous);
+
+		om.writeValue(entity, esEntity);
 	}
 
 	@Override

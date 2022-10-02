@@ -1,13 +1,17 @@
 package org.nishen.resourcepartners;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Map;
 
+import org.nishen.resourcepartners.entity.ResourcePartnerChangeRecord;
 import org.nishen.resourcepartners.entity.SyncPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import static java.util.stream.Collectors.counting;
 
 public class ResourcePartnerApp
 {
@@ -47,7 +51,7 @@ public class ResourcePartnerApp
 			switch (action)
 			{
 				case "harvest":
-					harvester.process(options);
+					harvester.process(options).ifPresent(this::generateOutput);
 					break;
 
 				case "preview":
@@ -65,6 +69,20 @@ public class ResourcePartnerApp
 		}
 
 		log.debug("application execution complete");
+	}
+
+	public void generateOutput(List<ResourcePartnerChangeRecord> changes)
+	{
+		try
+		{
+			long count = changes.stream().collect(counting());
+			output.saveHarvestChanges(changes);
+			log.info("harvest field changes:    {}", count);
+		}
+		catch (FileNotFoundException fnfe)
+		{
+			log.error("unable to save file");
+		}
 	}
 
 	public void generateOutput(SyncPayload payload)

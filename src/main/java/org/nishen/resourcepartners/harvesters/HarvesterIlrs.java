@@ -279,6 +279,8 @@ public class HarvesterIlrs implements Harvester
 	private boolean shouldHarvestRun()
 	{
 		int daysBetween = Integer.parseInt(config.get("days_between_update").orElse(DEFAULT_DAYS_BETWEEN));
+		if (config.get("days_between_update").isEmpty())
+			config.set("days_between_update", DEFAULT_DAYS_BETWEEN);
 
 		Calendar lastRun = Calendar.getInstance();
 		lastRun.set(2017, Calendar.JANUARY, 1);

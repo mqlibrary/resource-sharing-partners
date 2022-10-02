@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.nishen.resourcepartners.dao.DatastoreDAO;
@@ -39,7 +40,7 @@ public class ResourcePartnerHarvesterImpl implements ResourcePartnerHarvester
 	}
 
 	@Override
-	public void process(Map<String, String> options) throws Exception
+	public Optional<List<ResourcePartnerChangeRecord>> process(Map<String, String> options) throws Exception
 	{
 		Map<String, ResourcePartner> partners = datastore.getPartners();
 		log.info("loaded partners from datastore: {}", partners.size());
@@ -70,6 +71,8 @@ public class ResourcePartnerHarvesterImpl implements ResourcePartnerHarvester
 			harvestersToProcess = new HashSet<String>(harvestersPresent);
 		}
 
+		List<ResourcePartnerChangeRecord> changes = new ArrayList<ResourcePartnerChangeRecord>();
+
 		for (Harvester harvester : harvesters)
 		{
 			if (!harvestersToProcess.contains(harvester.getSource()))
@@ -82,8 +85,6 @@ public class ResourcePartnerHarvesterImpl implements ResourcePartnerHarvester
 			{
 				log.info("harvesting from: {}", harvester.getSource());
 				Map<String, ResourcePartner> harvestedPartners = harvester.harvest();
-
-				List<ResourcePartnerChangeRecord> changes = new ArrayList<ResourcePartnerChangeRecord>();
 
 				log.info("partners found:     {}", harvestedPartners.size());
 				Map<String, ResourcePartner> changed = harvester.update(partners, harvestedPartners, changes);
@@ -101,5 +102,7 @@ public class ResourcePartnerHarvesterImpl implements ResourcePartnerHarvester
 				log.info("skipping harvesting: {}", harvester.getSource());
 			}
 		}
+
+		return Optional.of(changes);
 	}
 }

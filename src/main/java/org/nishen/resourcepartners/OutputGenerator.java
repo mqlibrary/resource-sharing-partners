@@ -14,4 +14,6 @@ public interface OutputGenerator
 	public void saveDeleted(Map<String, Partner> deleted) throws FileNotFoundException;
 
 	public void saveChanges(Map<String, List<ResourcePartnerChangeRecord>> changes) throws FileNotFoundException;
+
+	public void saveHarvestChanges(List<ResourcePartnerChangeRecord> changes) throws FileNotFoundException;
 }
