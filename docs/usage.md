@@ -35,16 +35,22 @@ rsp.cmd -action harvest -harvesters LADD,TEPUNA
 ```
 This would only run the harvesters for LADD and TEPUNA.
 
+After the harvesting is complete, a file containing all field changes for any changed partners is created called __harvest-partners-changes.csv__. This allows you to see all changes to any partners in a convenient format.
+
 ### IRLS Harvesting
 IRLS harvesting generates a config file in the config folder, __ILRS.json__.
 ```json
 {
 	"last_run_attempt": "2022-09-28T11:44:32+1000",
-	"last_run": "2022-09-28T11:39:48+1000"
+	"last_run": "2022-09-28T11:39:48+1000",
+  "days_between_updates": "7"
 }
 ```
-This config records when the last run time and last run attempt occurred. The IRLS harvest only happens once every 7 days. If you want to run it within the 7 days, just edit the __last_run__ setting to a date something more than 7 days in the past.
+This config records when the last run time and last run attempt occurred. The IRLS harvest only happens once every 7 days. This is the default setting. If you want to run it more frequently, change the __days_between_updates__ from the default 7 days to something more appropriate. Setting this value to 0 will cause the ILRS harvest to happen with every execution.
 
+
+### The __previous__ folder
+When a partner is updated via the __harvest__ action, the partner is first backed up to the __previous__ folder (under the __partners__ folder) before the updated record is saved. This allows you to do a comparison between the current and previous state of a partner (or even restore the previous state if so desired by simply copying the file in __previous__ to the parent folder). Note that all changes to the partner record from a harvest is saved to the __harvest-partners-changes-[timestamp].csv__.
 ## The Preview Action
 To execute the __preview__ action we run the following command:
 ```bash
