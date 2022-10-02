@@ -47,6 +47,7 @@ Some additional reading (optional):
    ![Register an application](outlook-oauth2/outlook-oauth2-07.png)
 
 5. You should now have an app registered.
+   
    ![Registered apps](outlook-oauth2/outlook-oauth2-08.png)
 
 6. Click on the app that you just created. It should take you to the screen that allows you to configure the various aspects of the application.
@@ -65,14 +66,14 @@ Some additional reading (optional):
 8. Configure __Authentication__. Here, ensure that the Web section has a Redirect URI of http://localhost/outlook. Also ensure the __Access tokens__ and __ID tokens__ boxes are checked.
    ![Configuring Authentication](outlook-oauth2/outlook-oauth2-11.png)
 
-9. Configure __Certificates & secrets__. Select the __Client secret__ tab, then click __New client secret__. On the __Add a client secret__ screen, add a description and select Expires as 24 months.
+9.  Configure __Certificates & secrets__. Select the __Client secret__ tab, then click __New client secret__. On the __Add a client secret__ screen, add a description and select Expires as 24 months.
    ![Configure Certificates & properties](outlook-oauth2/outlook-oauth2-12.png)
 
    Once the secret is created, copy and save the secret value immediately. __Once you leave this page, you will not be able to retrieve the secret again and will need to create a new secret__.
-   
+
    ![Save the secret](outlook-oauth2/outlook-oauth2-13.png)
 
-10. Configure __API permissions__. Here we add the permissions that this App registration will have. We need to give it the ability to Read and Write to the accounts Mailbox. The __User.Read__ permissions should already be set. We need to add one additional permission: Mail.ReadWrite.
+11. Configure __API permissions__. Here we add the permissions that this App registration will have. We need to give it the ability to Read and Write to the accounts Mailbox. The __User.Read__ permissions should already be set. We need to add one additional permission: Mail.ReadWrite.
 
     Click on __Add a permission__ and select Microsoft Graph (which should be at the top).
     ![Microsoft Graph API](outlook-oauth2/outlook-oauth2-14.png)
