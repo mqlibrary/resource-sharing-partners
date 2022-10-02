@@ -41,8 +41,8 @@ After the harvesting is complete, a file containing all field changes for any ch
 IRLS harvesting generates a config file in the config folder, __ILRS.json__.
 ```json
 {
-	"last_run_attempt": "2022-09-28T11:44:32+1000",
-	"last_run": "2022-09-28T11:39:48+1000",
+  "last_run_attempt": "2022-09-28T11:44:32+1000",
+  "last_run": "2022-09-28T11:39:48+1000",
   "days_between_updates": "7"
 }
 ```
