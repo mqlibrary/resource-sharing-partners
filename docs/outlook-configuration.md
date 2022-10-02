@@ -69,6 +69,7 @@ Some additional reading (optional):
    ![Configure Certificates & properties](outlook-oauth2/outlook-oauth2-12.png)
 
    Once the secret is created, copy and save the secret value immediately. __Once you leave this page, you will not be able to retrieve the secret again and will need to create a new secret__.
+   
    ![Save the secret](outlook-oauth2/outlook-oauth2-13.png)
 
 10. Configure __API permissions__. Here we add the permissions that this App registration will have. We need to give it the ability to Read and Write to the accounts Mailbox. The __User.Read__ permissions should already be set. We need to add one additional permission: Mail.ReadWrite.
