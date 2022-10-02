@@ -35,7 +35,7 @@ rsp.cmd -action harvest -harvesters LADD,TEPUNA
 ```
 This would only run the harvesters for LADD and TEPUNA.
 
-After the harvesting is complete, a file containing all field changes for any changed partners is created called __harvest-partners-changes.csv__. This allows you to see all changes to any partners in a convenient format.
+After the harvesting is complete, a file containing all field changes for any changed partners is created called __harvest-partners-changes-[timestamp].csv__. This allows you to see all changes to any partners in a convenient format.
 
 ### IRLS Harvesting
 IRLS harvesting generates a config file in the config folder, __ILRS.json__.
