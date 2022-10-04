@@ -53,7 +53,7 @@ The ILRS has a configuration record in the configs folder, called __ILRS,json__,
 
 ```json
 {
-    "interval_days": 7,
+    "days_between_update": "7",
     "last_run": "2018-02-26T17:20:02+1100",
     "last_run_attempt": "2018-03-01T14:15:18+1100"
 }
@@ -69,39 +69,27 @@ This module updates the following fields in a partner record:
 "phone_fax": "02 6212 3699",
 "addresses": [
     {
-        "address_detail": {
-            "country": {
-                "@desc": "Australia",
-                "value": "AUS"
-            },
-            "city": "PARKES",
-            "state_province": "ACT",
-            "postal_code": "2600",
-            "line2": "National Archives Building / Queen Victoria Terrace",
-            "line1": "Ground Floor"
-        },
+        "country": "Australia",
+        "city": "PARKES",
+        "state_province": "ACT",
+        "postal_code": "2600",
+        "line2": "National Archives Building / Queen Victoria Terrace",
+        "line1": "Ground Floor",
         "address_type": "main",
         "address_status": "active"
     },
     {
-        "address_detail": {
-            "country": {
-                "@desc": "Australia",
-                "value": "AUS"
-            },
-            "city": "CANBERRA MAIL CENTRE",
-            "state_province": "ACT",
-            "postal_code": "2610",
-            "line1": "PO Box 7425"
-        },
+        "country": "AUS",
+        "city": "CANBERRA MAIL CENTRE",
+        "state_province": "ACT",
+        "postal_code": "2610",
+        "line1": "PO Box 7425",
         "address_type": "postal",
         "address_status": "active"
     },
     {
-        "address_detail": {
-            "line2": "Same as Postal address",
-            "line1": "ATTN: Librarian"
-        },
+        "line2": "Same as Postal address",
+        "line1": "ATTN: Librarian",
         "address_type": "billing",
         "address_status": "active"
     }
@@ -143,30 +131,20 @@ For New Zealand partners, the following fields are updated/created:
     "phone_fax": null,
     "addresses": [
         {
-            "address_detail": {
-                "country": {
-                    "@desc": "New Zealand",
-                    "value": "NZL"
-                },
-                "city": "Auckland",
-                "postal_code": "0610",
-                "line2": "Henderson",
-                "line1": "80 Central Park Drive"
-            },
+            "country": "New Zealand",
+            "city": "Auckland",
+            "postal_code": "0610",
+            "line2": "Henderson",
+            "line1": "80 Central Park Drive",
             "address_type": "main",
             "address_status": "active"
         },
         {
-            "address_detail": {
-                "country": {
-                    "@desc": "New Zealand",
-                    "value": "NZL"
-                },
-                "city": "Auckland",
-                "postal_code": "0650",
-                "line2": "Henderson",
-                "line1": "Private Bag 93 104"
-            },
+            "country": "New Zealand",
+            "city": "Auckland",
+            "postal_code": "0650",
+            "line2": "Henderson",
+            "line1": "Private Bag 93 104",
             "address_type": "postal",
             "address_status": "active"
         }
